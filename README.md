@@ -1,13 +1,13 @@
 # ChangeFileNames
 Utility in Java to change file names in folder/child-folders in different ways.
 
-##Usage<br>
+## Usage<br>
 `javac ChangeFileNames <srcDir> <include-sub-folders> <file-filter-extension> <option> [<extra-param>]`<br>
-`where`<br>
- \<srcDir> - source directory whose filenames are to be processed.<br>
- \<include-sub-folders> - TRUE to include and FALSE to exclude.<br>
- \<file-filter-extension> - the specific files (like .html or .class etc) to be processed. "ALL" for all files.<br>
- \<option> - the operation to be performed on files, also <extra-param> is optional and required by some of the operations of <option>. The valid options are:<br>
+where<br>
+ * \<srcDir> - source directory whose filenames are to be processed.<br>
+ * \<include-sub-folders> - TRUE to include and FALSE to exclude.<br>
+ * \<file-filter-extension> - the specific files (like .html or .class etc) to be processed. "ALL" for all files.<br>
+ * \<option> - the operation to be performed on files, also <extra-param> is optional and required by some of the operations of <option>. The valid options are:<br>
 1. REMOVE_NUMBERS_FROM_FILE_NAMES<br>
 2. REMOVE_NUMBERS_FROM_START<br>
 3. REMOVE_NUMBERS_FROM_END<br>
