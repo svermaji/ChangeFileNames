@@ -25,7 +25,7 @@ where
         15. REPLACE_MATCH_FROM_END <search-string> <replacement-string><br>
         16. REPLACE_MATCH <search-string> <replacement-string><br>
         17. CONVERT_TO_TITLE_CASE<br>
-        18. UPDATE_MP3_TAGS<br>
+        18. UPDATE_MP3_TAGS (obsolete)<br>
 
 > Examples 
 > 1. `javac ChangeFileNames c:/test FALSE mp3 REMOVE_NUMBERS_FROM_START`<br>
