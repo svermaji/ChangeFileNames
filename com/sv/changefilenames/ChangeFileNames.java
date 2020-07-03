@@ -51,7 +51,7 @@ public class ChangeFileNames extends AppFrame {
     private DefaultConfigs configs;
 
     private ChangeFileNames() {
-        logger = MyLogger.createLogger("ChangeFileNames.log");
+        logger = MyLogger.createLogger("cfn.log");
         configs = new DefaultConfigs(logger);
         setTitle(title);
         initComponents();
@@ -335,8 +335,10 @@ public class ChangeFileNames extends AppFrame {
 
     private BaseProcessor getProcessor(Arguments args) {
         final String log = "getProcessor: ";
+        final String clazzName = this.getClass().getPackage().getName() + "." + args.getChoice().getValue();
+        logger.log("Trying to initialize processor: " + clazzName);
         try {
-            return (BaseProcessor) Class.forName(this.getClass().getPackage() + "." + args.getChoice().getValue())
+            return (BaseProcessor) Class.forName(clazzName)
                     .getConstructor(logger.getClass())
                     .newInstance(logger);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
