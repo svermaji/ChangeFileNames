@@ -1,3 +1,5 @@
+package com.sv.changefilenames;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
