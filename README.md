@@ -2,7 +2,7 @@
 Utility in Java to change file names in folder/child-folders in different ways.
 
 ## Recent Changes<br>
-### On 03-Jul-2020<br>
+#### On 03-Jul-2020<br>
 Changes made to option/location/params will be auto-saved as preferences.<br>
 
 ## Usage<br>
