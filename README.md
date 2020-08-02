@@ -2,6 +2,11 @@
 Utility in Java to change file names in folder/child-folders in different ways.
 
 ## Recent Changes<br>
+#### On 02-Aug-2020<br>
+Now instead of changing your filenames upfront you can check using "Preview" action that what would be actual changes.  
+> Remember that some changes of file names may throw runtime exception, if some operation leads to change in file name that already exists.
+
+## Recent Changes<br>
 #### On 03-Jul-2020<br>
 Changes made to option/location/params will be auto-saved as preferences.<br>
 
@@ -40,4 +45,8 @@ where
 > 6. `javac ChangeFileNames c:/test FALSE class REPLACE_MATCH abc xyz`<br>
 
 #### Images<br>
-![Image of Yaktocat](https://github.com/svermaji/ChangeFileNames/blob/master/cfn.png) 
+Welcome screen that stores all your values from last run<br>
+![Image of Yaktocat](https://github.com/svermaji/ChangeFileNames/blob/master/cfn.png)<br> 
+<br>
+Welcome screen that stores all your values from last run<br>
+![Image of Yaktocat](https://github.com/svermaji/ChangeFileNames/blob/master/cfn-preview.png)<br> 
