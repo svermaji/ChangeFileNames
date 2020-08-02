@@ -17,17 +17,16 @@ public class RemoveMatchFromStart extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        /*if (!Utils.hasValue(extraPrm1)) {
-            printMsg(log + "***Parameter explaining matching string is null.");
-            return Utils.EMPTY;
+        checkParamForEmpty(args.getParam1(),
+                "Parameter explaining how many characters to remove is null.");
+
+        String str = args.getFileNameNoExtn();
+
+        if (str.startsWith(args.getParam1())) {
+            str = str.substring(args.getParam1().length());
         }
 
-        if (fileName.indexOf(extraPrm1) == 0)
-            fileName = fileName.substring(extraPrm1.length());
-
-        printMsg(log + "Finishing process with parameters: fileName [" + fileName + "], extraPrm1 [" + extraPrm1 + "] and extraPrm2 [" + extraPrm2 + "]");
-        return fileName;*/
-        return null;
+        return str;
     }
 
 }

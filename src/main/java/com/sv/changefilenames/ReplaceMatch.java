@@ -25,7 +25,7 @@ public class ReplaceMatch extends BaseProcessor {
         String str = args.getFileNameNoExtn();
         int idx = str.indexOf(args.getParam1());
         int len = args.getParam1().length();
-        while (idx > 0) {
+        while (idx >= 0) {
             str = str.substring(0, idx) + args.getParam2() + str.substring(idx + len);
             idx = str.indexOf(args.getParam1());
         }

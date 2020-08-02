@@ -13,7 +13,7 @@ public enum ChoiceInfo {
     REMOVE_SPACES_FROM_END("Remove spaces from end", "RemoveSpacesFromEnd"),
     REMOVE_SPACES_FROM_BOTH_SIDES("Remove spaces from both sides", "RemoveSpacesFromBothSides"),
     CONVERT_TO_TITLE_CASE("Convert to title case", "ConvertToTitleCase"),
-    CONVERT_TO_SENTENCE_CASE("Convert to title case", "ConvertToTitleCase"),
+    CONVERT_TO_SENTENCE_CASE("Convert to sentence case", "ConvertToSentenceCase"),
     REMOVE_MATCH_FROM_START("Remove match from start", "RemoveMatchFromStart"),
     REMOVE_MATCH_FROM_END("Remove match from end", "RemoveMatchFromEnd"),
     REMOVE_MATCH("Remove match", "RemoveMatch"),

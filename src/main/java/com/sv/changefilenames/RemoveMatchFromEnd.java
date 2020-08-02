@@ -17,21 +17,18 @@ public class RemoveMatchFromEnd extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        if (!Utils.hasValue(args.getParam1())) {
-//            printMsg(log + "***Parameter explaining matching string is null.");
-            return Utils.EMPTY;
+        checkParamForEmpty(args.getParam1(),
+                "Parameter explaining how many characters to remove is null.");
+
+        String str = args.getFileNameNoExtn();
+        String strRev = new StringBuilder(str).reverse().toString();
+        String param1Rev = new StringBuilder(args.getParam1()).reverse().toString();
+
+        if (strRev.startsWith(param1Rev)) {
+            strRev = strRev.substring(param1Rev.length());
         }
 
-        // TODO: revisit
-        //fileName = new StringBuilder(fileName).reverse().toString();
-        String revPrm1 = new StringBuilder(args.getParam1()).reverse().toString();
-        String revPrm2 = new StringBuilder(args.getParam1()).reverse().toString();
-        // TODO: revisit
-//        StringBuilder sb = new StringBuilder(removeMatchFromStart(args));
-//        String returnFileName = sb.reverse().toString();
-
-//        return returnFileName;
-        return null;
+        return new StringBuilder(strRev).reverse().toString();
     }
 
 }

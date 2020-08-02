@@ -17,20 +17,20 @@ public class RemoveNumbersFromEnd extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        boolean meetAlphabet = false;
-        StringBuilder sb = new StringBuilder(Utils.EMPTY);
-        for (int c = 0; c < args.getFile().getName().length(); c++) {
-            char ch = args.getFile().getName().charAt(c);
-            if (!Utils.isNumeric(ch) || meetAlphabet) {
-                meetAlphabet = true;
-                sb.append(ch);
+        String filename = args.getFileNameNoExtn();
+        int idx = filename.length();
+        for (int c = filename.length() - 1; c > 0; c--) {
+            char ch = filename.charAt(c);
+            if (Utils.isNumeric(ch)) {
+                idx = c;
+            } else {
+                break;
             }
-
         }
-        return sb.toString();
-
-        // TODO: check it .... code right now is from start .... no change
-        //return sb.reverse().toString();
+        if (idx == 0) {
+            return "";
+        }
+        return filename.substring(0, idx);
     }
 
 }

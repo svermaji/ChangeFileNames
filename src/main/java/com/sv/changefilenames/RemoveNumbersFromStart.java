@@ -17,17 +17,20 @@ public class RemoveNumbersFromStart extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        boolean meetAlphabet = false;
-        StringBuilder sb = new StringBuilder(Utils.EMPTY);
-        for (int c = 0; c < args.getFile().getName().length(); c++) {
-            char ch = args.getFile().getName().charAt(c);
-            if (!Utils.isNumeric(ch) || meetAlphabet) {
-                meetAlphabet = true;
-                sb.append(ch);
+        String filename = args.getFileNameNoExtn();
+        int idx = 0;
+        for (int c = 0; c < filename.length(); c++) {
+            char ch = filename.charAt(c);
+            if (Utils.isNumeric(ch)) {
+                idx = c+1;
+            } else {
+                break;
             }
-
         }
-        return sb.toString();
+        if (idx == filename.length()) {
+            return "";
+        }
+        return filename.substring(idx);
     }
 
 }

@@ -17,20 +17,18 @@ public class ReplaceMatchFromStart extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        /*if (!Utils.hasValue(extraPrm1)) {
-            printMsg(log + "***Parameter to search is null.");
-            return Utils.EMPTY;
-        }
-        if (!Utils.hasValue(extraPrm2)) {
-            printMsg(log + "***Parameter to replace is null.");
-            return Utils.EMPTY;
+        checkParamForEmpty(args.getParam1(),
+                "Parameter explaining which string to replace is null.");
+        checkParamForEmpty(args.getParam2(),
+                "Parameter explaining what string to replace is null.");
+
+        String str = args.getFileNameNoExtn();
+
+        if (str.startsWith(args.getParam1())) {
+            str = args.getParam2() + str.substring(args.getParam1().length());
         }
 
-        if (fileName.indexOf(extraPrm1) == 0)
-            fileName = fileName.replaceFirst(extraPrm1, extraPrm2);
-
-        return fileName;*/
-        return null;
+        return str;
     }
 
 }

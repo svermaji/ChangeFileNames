@@ -17,23 +17,21 @@ public class ReplaceMatchFromEnd extends BaseProcessor {
      */
     @Override
     protected String process(Arguments args) {
-        /*if (!Utils.hasValue(extraPrm1)) {
-            printMsg(log + "***Parameter to search is null.");
-            return Utils.EMPTY;
-        }
-        if (!Utils.hasValue(extraPrm2)) {
-            printMsg(log + "***Parameter to replace is null.");
-            return Utils.EMPTY;
+        checkParamForEmpty(args.getParam1(),
+                "Parameter explaining which string to replace is null.");
+        checkParamForEmpty(args.getParam2(),
+                "Parameter explaining what string to replace is null.");
+
+        String str = args.getFileNameNoExtn();
+        String strRev = new StringBuilder(str).reverse().toString();
+        String param1Rev = new StringBuilder(args.getParam1()).reverse().toString();
+        String param2Rev = new StringBuilder(args.getParam2()).reverse().toString();
+
+        if (strRev.startsWith(param1Rev)) {
+            strRev = param2Rev + strRev.substring(args.getParam1().length());
         }
 
-        fileName = new StringBuilder(fileName).reverse().toString();
-        String revPrm1 = new StringBuilder(extraPrm1).reverse().toString();
-        String revPrm2 = new StringBuilder(extraPrm2).reverse().toString();
-        StringBuilder sb = new StringBuilder(replaceMatchFromStart(fileName, revPrm1, revPrm2, file));
-        String returnFileName = sb.reverse().toString();
-
-        return returnFileName;*/
-        return null;
+        return new StringBuilder(strRev).reverse().toString();
     }
 
 }
