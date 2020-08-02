@@ -38,3 +38,6 @@ where
 > 4. `javac ChangeFileNames c:/test FALSE class REMOVE_CHARS_FROM_END 4`<br>
 > 5. `javac ChangeFileNames c:/test FALSE class REMOVE_SPACES_FROM_END`<br>
 > 6. `javac ChangeFileNames c:/test FALSE class REPLACE_MATCH abc xyz`<br>
+
+#### Images<br>
+![Image of Yaktocat](https://github.com/svermaji/ChangeFileNames/blob/master/cfn.png) 
