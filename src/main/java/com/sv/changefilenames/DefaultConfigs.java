@@ -3,12 +3,14 @@ package com.sv.changefilenames;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
 public class DefaultConfigs {
 
+    private URL propUrl;
     enum Config {
         ACTION ("default-action"),
         LOCATION ("default-location"),
@@ -26,7 +28,7 @@ public class DefaultConfigs {
         }
     }
 
-    String propFileName = "C:\\sv\\JavaPrgs\\Utilities\\src\\com\\sv\\changefilenames\\cfn.config";
+    String propFileName = "./cfn.config";
     private final Properties configs = new Properties();
     private MyLogger logger;
 
@@ -46,20 +48,24 @@ public class DefaultConfigs {
     }
 
     private void readConfig() {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(propFileName)) {
+        logger.log ("Loading properties from path: " + propFileName);
+        try (InputStream is = Files.newInputStream(Paths.get(propFileName))) {
+            propUrl = Paths.get(propFileName).toUri().toURL();
             configs.load(is);
         } catch (Exception e) {
-            logger.log ("Error in loading properties via class loader, trying file path.");
-            try (InputStream is = Files.newInputStream(Paths.get(propFileName))) {
+            logger.log ("Error in loading properties via file path, trying class loader.");
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(propFileName)) {
+                propUrl = Paths.get(propFileName).toUri().toURL();
                 configs.load(is);
             } catch (IOException ioException) {
-                logger.log ("Error in loading properties via file path.");
+                logger.log ("Error in loading properties via class loader.");
             }
         }
+        logger.log ("Prop url calculated as: " + propUrl);
     }
 
     public void saveConfig(ChangeFileNames cfn) {
-        logger.log ("Saving properties.");
+        logger.log ("Saving properties at " + propUrl.getPath());
         configs.clear();
         configs.put(Config.ACTION.getVal(), cfn.getAction());
         configs.put(Config.LOCATION.getVal(), cfn.getLocationVal());
@@ -68,7 +74,7 @@ public class DefaultConfigs {
         configs.put(Config.EXTENSION.getVal(), cfn.getTxtExt());
         logger.log ("Config is " + configs);
         try {
-            configs.store(new FileOutputStream(propFileName), null);
+            configs.store(new FileOutputStream(propUrl.getPath()), null);
         } catch (IOException e) {
             logger.log ("Error in saving properties.");
         }

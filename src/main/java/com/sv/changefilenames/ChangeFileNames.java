@@ -48,7 +48,7 @@ public class ChangeFileNames extends AppFrame {
     private final String EMPTY = Utils.EMPTY;
 
     private Arguments.OperationName operation;
-    private DefaultConfigs configs;
+    private final DefaultConfigs configs;
 
     private ChangeFileNames() {
         logger = MyLogger.createLogger("cfn.log");
