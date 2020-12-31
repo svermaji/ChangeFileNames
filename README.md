@@ -17,15 +17,15 @@ where
  * \<include-sub-folders> - TRUE to include and FALSE to exclude.<br>
  * \<file-filter-extension> - the specific files (like .html or .class etc) to be processed. "ALL" for all files.<br>
  * \<option> - the operation to be performed on files, also <extra-param> is optional and required by some of the operations of <option>. The valid options are:<br>
-        1. REMOVE_NUMBERS_FROM_FILE_NAMES<br>
-        2. REMOVE_NUMBERS_FROM_START<br>
-        3. REMOVE_NUMBERS_FROM_END<br>
-        4. APPEND_STRING_IN_START <string><br>
-        5. APPEND_STRING_IN_END <string><br>
-        6. REMOVE_CHARS_FROM_START <number-of-chars><br>
-        7. REMOVE_CHARS_FROM_END <number-of-chars><br>
-        8. REMOVE_SPACES_FROM_START<br>
-        9. REMOVE_SPACES_FROM_END<br>
+        1.  REMOVE_NUMBERS_FROM_FILE_NAMES<br>
+        2.  REMOVE_NUMBERS_FROM_START<br>
+        3.  REMOVE_NUMBERS_FROM_END<br>
+        4.  APPEND_STRING_IN_START <string><br>
+        5.  APPEND_STRING_IN_END <string><br>
+        6.  REMOVE_CHARS_FROM_START <number-of-chars><br>
+        7.  REMOVE_CHARS_FROM_END <number-of-chars><br>
+        8.  REMOVE_SPACES_FROM_START<br>
+        9.  REMOVE_SPACES_FROM_END<br>
         10. REMOVE_SPACES_FROM_BOTH_SIDES<br>
         11. REMOVE_MATCH_FROM_START <string><br>
         12. REMOVE_MATCH_FROM_END <string><br>

@@ -3,12 +3,10 @@ package com.sv.changefilenames;
 import com.sv.core.Utils;
 import com.sv.core.config.DefaultConfigs;
 import com.sv.core.logger.MyLogger;
-import com.sv.swingui.component.AppButton;
-import com.sv.swingui.component.AppExitButton;
-import com.sv.swingui.component.AppFrame;
-import com.sv.swingui.component.AppLabel;
+import com.sv.swingui.component.*;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -23,6 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.sv.core.Constants.EMPTY;
+import static com.sv.swingui.UIConstants.EMPTY_BORDER;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,8 +42,8 @@ public class ChangeFileNames extends AppFrame {
 
     private final MyLogger logger;
 
-    private JLabel lblFolder, lblAction, lblParam1, lblParam2, lblExt, lblLoading;
-    private JTextField txtFolder, txtParam1, txtParam2, txtExt;
+    private JLabel lblFolder, lblAction, lblParam1, lblParam2, lblExtn, lblLoading;
+    private JTextField txtFolder, txtParam1, txtParam2, txtExtn;
     //private JCheckBox jcSubFolder, jcProcessFolders, jcOverwrite, jcAppendFolder, jcUpdateID3v2Tag, jcModifyTitle;
     private JCheckBox jcSubFolder, jcProcessFolders, jcAppendFolder;
     private JComboBox<ChoiceInfo> jcb;
@@ -81,19 +80,19 @@ public class ChangeFileNames extends AppFrame {
         uin = UIName.LBL_ACTION;
         lblAction = new AppLabel(uin.name, jcb, uin.mnemonic, uin.tip);
         uin = UIName.LBL_LOADING;
-        lblLoading = new JLabel(new ImageIcon("loading.gif"));
+        lblLoading = new JLabel(new ImageIcon("./icons/loading.gif"));
         uin = UIName.LBL_P1;
         lblParam1 = new AppLabel(uin.name, txtParam1, uin.mnemonic, uin.tip);
         uin = UIName.LBL_P2;
         lblParam2 = new AppLabel(uin.name, txtParam2, uin.mnemonic, uin.tip);
         uin = UIName.LBL_EXTN;
-        lblExt = new JLabel("Process files with ext.");
+        lblExtn = new AppLabel(uin.name, txtExtn, uin.mnemonic, uin.tip);
 
         //txtFolder = new JTextField("E:\\Songs\\2017", 20);
-        txtFolder = new JTextField(configs.getConfig(Configs.Folder.name()), 20);
-        txtParam1 = new JTextField(EMPTY, 5);
-        txtParam2 = new JTextField(EMPTY, 5);
-        txtExt = new JTextField(configs.getConfig(Configs.Extension.name()), 5);
+        txtFolder = new AppTextField(configs.getConfig(Configs.Folder.name()), 30);
+        txtParam1 = new AppTextField(EMPTY, 15);
+        txtParam2 = new AppTextField(EMPTY, 8);
+        txtExtn = new AppTextField(configs.getConfig(Configs.Extension.name()), 8);
 
         ChoiceInfo[] allChoices = ChoiceInfo.values();
         Arrays.sort(allChoices, new ChoicesComparator());
@@ -102,19 +101,21 @@ public class ChangeFileNames extends AppFrame {
         if (isValidAction(actionConfig)) {
             jcb.setSelectedItem(ChoiceInfo.valueOf(actionConfig));
         }
-        //jcb.setSelectedItem(ChoiceInfo.APPEND_STRING_IN_START);
 
-        CheckboxInfo checkbox = CheckboxInfo.SUB_FOLDER;
-        jcSubFolder = new JCheckBox(checkbox.getLabel(), checkbox.isSelected());
-        jcSubFolder.setToolTipText(checkbox.getToolTip());
+        uin = UIName.SUB_FOLDER;
+        jcSubFolder = new JCheckBox(uin.name, false); //TODO: from config
+        jcSubFolder.setMnemonic(uin.mnemonic);
+        jcSubFolder.setToolTipText(uin.tip);
 
-        checkbox = CheckboxInfo.PROCESS_FOLDER;
-        jcProcessFolders = new JCheckBox(checkbox.getLabel(), checkbox.isSelected());
-        jcProcessFolders.setToolTipText(checkbox.getToolTip());
+        uin = UIName.PROCESS_FOLDER;
+        jcProcessFolders = new JCheckBox(uin.name, false);
+        jcProcessFolders.setMnemonic(uin.mnemonic);
+        jcProcessFolders.setToolTipText(uin.tip);
 
-        checkbox = CheckboxInfo.APPEND_FOLDER;
-        jcAppendFolder = new JCheckBox(checkbox.getLabel(), checkbox.isSelected());
-        jcAppendFolder.setToolTipText(checkbox.getToolTip());
+        uin = UIName.APPEND_FOLDER;
+        jcAppendFolder = new JCheckBox(uin.name, false);
+        jcAppendFolder.setMnemonic(uin.mnemonic);
+        jcAppendFolder.setToolTipText(uin.tip);
 
         taStatus = new JTextArea(EMPTY);
         taStatus.setLineWrap(true);
@@ -139,6 +140,7 @@ public class ChangeFileNames extends AppFrame {
         //setSize(new Dimension(1200, 500));
         setExtendedState(MAXIMIZED_BOTH);
         setVisible(true);
+        setControlsToEnable();
     }
 
     private boolean isValidAction(String config) {
@@ -168,9 +170,8 @@ public class ChangeFileNames extends AppFrame {
             if (jfc.getSelectedFile() != null) {
                 txtFolder.setText(jfc.getSelectedFile().getCanonicalPath());
             }
-        } catch (Exception e1) {
-            printExceptionDetails("Error: " + e1.getMessage());
-            e1.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e);
         }
     }
 
@@ -195,8 +196,8 @@ public class ChangeFileNames extends AppFrame {
                 try {
                     startProcessing(prepareArguments());
                 } catch (Exception e) {
-                    printMsg(e.getMessage());
-                    e.printStackTrace();
+                    printMsg(e.getMessage(), true);
+                    logger.error(e);
                 }
                 return null;
             }
@@ -226,18 +227,21 @@ public class ChangeFileNames extends AppFrame {
         getContentPane().setLayout(new BorderLayout());
 
         JPanel jpUp = new JPanel();
+//        jpUp.setBorder(new TitledBorder("Controls"));
         JPanel jpDown = new JPanel();
         JPanel jpMid = new JPanel();
+//        jpMid.setBorder(new TitledBorder("Options"));
         jpSouth = new JPanel();
         jpNorth = new JPanel();
-        jpNorth.setLayout(new GridLayout(3, 1));
+        jpNorth.setLayout(new GridLayout(2, 1));
         jpUp.add(lblFolder);
         jpUp.add(txtFolder);
         jpUp.add(btnBrowse);
-        jpUp.add(lblExt);
-        jpUp.add(txtExt);
+        jpUp.add(lblExtn);
+        jpUp.add(txtExtn);
         jpUp.add(lblAction);
         jpUp.add(jcb);
+        jpDown.add(jpMid);
         jpDown.add(lblParam1);
         jpDown.add(txtParam1);
         txtParam1.setText(configs.getConfig(Configs.Param1.name()));
@@ -251,22 +255,18 @@ public class ChangeFileNames extends AppFrame {
         lblLoading.setVisible(false);
         jpMid.add(jcSubFolder);
         jpMid.add(jcProcessFolders);
-        //jpMid.add(jcOverwrite);
         jpMid.add(jcAppendFolder);
-        /*jpMid.add(jcUpdateID3v2Tag);
-        jpMid.add(jcModifyTitle);*/
         jpSouth.add(btnClear);
         jpSouth.add(btnUsage);
 
         jpNorth.add(jpUp);
-        jpNorth.add(jpMid);
         jpNorth.add(jpDown);
 
         add(jpNorth, BorderLayout.NORTH);
         add(jpSouth, BorderLayout.SOUTH);
-        add(new JPanel(), BorderLayout.EAST);
-        add(new JPanel(), BorderLayout.WEST);
-        add(new JScrollPane(taStatus), BorderLayout.CENTER);
+        JScrollPane jsp = new JScrollPane(taStatus);
+        jsp.setBorder(EMPTY_BORDER);
+        add(jsp, BorderLayout.CENTER);
     }
 
     /**
@@ -293,7 +293,7 @@ public class ChangeFileNames extends AppFrame {
             BaseProcessor processor = getProcessor(args);
 
             if (processor == null) {
-                printMsg(log + "Unable to find processor for arguments [" + args + "]");
+                printMsg(log + "Unable to find processor for arguments [" + args + "]", true);
                 return;
             }
 
@@ -370,8 +370,7 @@ public class ChangeFileNames extends AppFrame {
                     .getConstructor(logger.getClass())
                     .newInstance(logger);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            printExceptionDetails(log + "Error: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e);
         }
 
         return null;
@@ -441,9 +440,21 @@ public class ChangeFileNames extends AppFrame {
      * @param s message to print
      */
     private void printMsg(String s) {
+        printMsg(s, false);
+    }
+
+    private void printMsg(String s, boolean error) {
         taStatus.append(s + System.lineSeparator());
         s = "[" + new Date() + "]" + s;
-        logger.log(s);
+        printLog(s, error);
+    }
+
+    private void printLog(String s, boolean error) {
+        if (error) {
+            logger.error(s);
+        } else {
+            logger.log(s);
+        }
     }
 
     /**
@@ -479,7 +490,7 @@ public class ChangeFileNames extends AppFrame {
         File srcDir = new File(dir);
         boolean result = srcDir.exists() && srcDir.isDirectory();
         if (!result) {
-            printExceptionDetails("Either path for directory [" + dir + "] does not exists or it is not a directory.");
+            logger.error("Either path for directory [" + dir + "] does not exists or it is not a directory.");
         }
         return result;
     }
@@ -523,16 +534,6 @@ public class ChangeFileNames extends AppFrame {
     }
 
     /**
-     * print the usage and then throws the exception with the
-     * given message.
-     *
-     * @param msg string for exception message
-     */
-    private void printExceptionDetails(String msg) {
-        printMsg(msg);
-    }
-
-    /**
      * entry unit point
      *
      * @param args parameters for processing filenames
@@ -545,7 +546,7 @@ public class ChangeFileNames extends AppFrame {
         Arguments arguments = new Arguments();
 
         arguments.setSourceDir(txtFolder.getText());
-        arguments.setFileType(txtExt.getText());
+        arguments.setFileType(txtExtn.getText());
         arguments.setChoice(((ChoiceInfo) (jcb.getSelectedItem())));
         arguments.setParam1(Utils.hasValue(txtParam1.getText()) ? txtParam1.getText() : EMPTY);
         arguments.setParam2(Utils.hasValue(txtParam2.getText()) ? txtParam2.getText() : EMPTY);
@@ -569,14 +570,26 @@ public class ChangeFileNames extends AppFrame {
         if (args != null && validateAllArgs(args)) {
             process(args);
         } else {
-            printMsg("Unable to start process.");
+            printMsg("Unable to start process.", true);
         }
+    }
+
+    private void setControlsToEnable() {
+        Component[] components = {
+                jpNorth, jpSouth
+        };
+        setComponentToEnable(components);
+        //setComponentContrastToEnable(new Component[]{btnCancel});
+        enableControls();
     }
 
     private void handleControls(boolean enable) {
         showLoading(enable);
-        jpNorth.setEnabled(enable);
-        jpSouth.setEnabled(enable);
+        if (enable) {
+            enableControls();
+        } else {
+            disableControls();
+        }
     }
 
     private void showLoading(boolean enable) {
@@ -596,7 +609,7 @@ public class ChangeFileNames extends AppFrame {
     }
 
     public String getExtension() {
-        return txtExt.getText();
+        return txtExtn.getText();
     }
 
     public String getAction() {
