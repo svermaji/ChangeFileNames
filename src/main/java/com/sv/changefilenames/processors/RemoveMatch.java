@@ -1,4 +1,8 @@
-package com.sv.changefilenames;
+package com.sv.changefilenames.processors;
+
+import com.sv.changefilenames.Arguments;
+import com.sv.changefilenames.BaseProcessor;
+import com.sv.core.logger.MyLogger;
 
 /**
  *

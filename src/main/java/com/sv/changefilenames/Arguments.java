@@ -1,11 +1,13 @@
 package com.sv.changefilenames;
 
+import com.sv.core.Utils;
+
 import java.io.File;
 
 public class Arguments {
 
     enum OperationName {
-        PREVIEW, CHANGE;
+        PREVIEW, CHANGE
     }
 
     private OperationName operationName;
@@ -89,7 +91,7 @@ public class Arguments {
     }
 
     public String getFileNameNoExtn() {
-        return Utils.getFileNameNoExtn(file.getName(), fileType);
+        return Utils.getFileName(file.getName());
     }
 
     public String getFileName() {

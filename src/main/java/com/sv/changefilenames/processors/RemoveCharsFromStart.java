@@ -1,11 +1,16 @@
-package com.sv.changefilenames;
+package com.sv.changefilenames.processors;
+
+import com.sv.changefilenames.Arguments;
+import com.sv.changefilenames.BaseProcessor;
+import com.sv.changefilenames.ChangeFileNamesException;
+import com.sv.core.logger.MyLogger;
 
 /**
  * Created by 44085037 on 16-Oct-17
  */
-public class RemoveCharsFromEnd extends BaseProcessor {
+public class RemoveCharsFromStart extends BaseProcessor {
 
-    public RemoveCharsFromEnd(MyLogger logger) {
+    public RemoveCharsFromStart(MyLogger logger) {
         super(logger);
     }
 
@@ -34,7 +39,7 @@ public class RemoveCharsFromEnd extends BaseProcessor {
             throw new ChangeFileNamesException(msg, e);
         }
 
-        return fileName.substring(0, fileName.length() - numChars);
+        return fileName.substring(numChars);
     }
 
 }

@@ -2,6 +2,8 @@ package com.sv.changefilenames;
 
 public enum ChoiceInfo {
 
+    //TODO: Take names from processor package and use match case
+
     REMOVE_NUMBERS_FROM_FILE_NAMES("Remove numbers from file names", "RemoveNumbersFromFileNames"),
     REMOVE_NUMBERS_FROM_START("Remove numbers from start", "RemoveNumbersFromStart"),
     REMOVE_NUMBERS_FROM_END("Remove numbers from end", "RemoveNumbersFromEnd"),

@@ -1,5 +1,13 @@
 package com.sv.changefilenames;
 
+import com.sv.core.Utils;
+import com.sv.core.config.DefaultConfigs;
+import com.sv.core.logger.MyLogger;
+import com.sv.swingui.component.AppButton;
+import com.sv.swingui.component.AppExitButton;
+import com.sv.swingui.component.AppFrame;
+import com.sv.swingui.component.AppLabel;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
@@ -14,6 +22,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.sv.core.Constants.EMPTY;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Shailendra Verma (shailendravermag@gmail.com)
@@ -26,6 +36,10 @@ import java.util.stream.Stream;
  * View usage for help.
  */
 public class ChangeFileNames extends AppFrame {
+
+    enum Configs {
+        Action, Folder, Param1, Param2, Extension
+    }
 
     private final MyLogger logger;
 
@@ -44,16 +58,13 @@ public class ChangeFileNames extends AppFrame {
     private static int successfullyProcessedFiles = 0;
     private static int unprocessedFiles = 0;
 
-    private final String title = "Change File Names";
-    private final String EMPTY = Utils.EMPTY;
-
     private Arguments.OperationName operation;
     private final DefaultConfigs configs;
 
     private ChangeFileNames() {
+        super("Change File Names");
         logger = MyLogger.createLogger("cfn.log");
-        configs = new DefaultConfigs(logger);
-        setTitle(title);
+        configs = new DefaultConfigs(logger, Utils.getConfigsAsArr(Configs.class));
         initComponents();
     }
 
@@ -65,24 +76,30 @@ public class ChangeFileNames extends AppFrame {
             }
         });
 
-        lblFolder = new JLabel("Folder");
-        lblAction = new JLabel("Action");
+        UIName uin = UIName.LBL_FOLDER;
+        lblFolder = new AppLabel(uin.name, txtFolder, uin.mnemonic, uin.tip);
+        uin = UIName.LBL_ACTION;
+        lblAction = new AppLabel(uin.name, jcb, uin.mnemonic, uin.tip);
+        uin = UIName.LBL_LOADING;
         lblLoading = new JLabel(new ImageIcon("loading.gif"));
-        lblParam1 = new JLabel("Param 1");
-        lblParam2 = new JLabel("Param 2");
+        uin = UIName.LBL_P1;
+        lblParam1 = new AppLabel(uin.name, txtParam1, uin.mnemonic, uin.tip);
+        uin = UIName.LBL_P2;
+        lblParam2 = new AppLabel(uin.name, txtParam2, uin.mnemonic, uin.tip);
+        uin = UIName.LBL_EXTN;
         lblExt = new JLabel("Process files with ext.");
 
         //txtFolder = new JTextField("E:\\Songs\\2017", 20);
-        txtFolder = new JTextField(configs.getConfig(DefaultConfigs.Config.LOCATION), 20);
+        txtFolder = new JTextField(configs.getConfig(Configs.Folder.name()), 20);
         txtParam1 = new JTextField(EMPTY, 5);
         txtParam2 = new JTextField(EMPTY, 5);
-        txtExt = new JTextField(configs.getConfig(DefaultConfigs.Config.EXTENSION), 5);
+        txtExt = new JTextField(configs.getConfig(Configs.Extension.name()), 5);
 
         ChoiceInfo[] allChoices = ChoiceInfo.values();
         Arrays.sort(allChoices, new ChoicesComparator());
         jcb = new JComboBox<>(allChoices); //drop down Options
-        String actionConfig = configs.getConfig(DefaultConfigs.Config.ACTION);
-        if (isValidAction (actionConfig)) {
+        String actionConfig = configs.getConfig(Configs.Action.name());
+        if (isValidAction(actionConfig)) {
             jcb.setSelectedItem(ChoiceInfo.valueOf(actionConfig));
         }
         //jcb.setSelectedItem(ChoiceInfo.APPEND_STRING_IN_START);
@@ -103,19 +120,25 @@ public class ChangeFileNames extends AppFrame {
         taStatus.setLineWrap(true);
         taStatus.setAutoscrolls(true);
 
-        btnPreview = new JButton("Preview");
-        btnChange = new JButton("Change");
-        btnBrowse = new JButton("Browse");
-        btnClear = new JButton("Clear Status");
-        btnUsage = new JButton("Usage");
-        btnExit = new JButton("Exit");
+        uin = UIName.BTN_PRVW;
+        btnPreview = new AppButton(uin.name, uin.mnemonic, uin.tip);
+        uin = UIName.BTN_CHNG;
+        btnChange = new AppButton(uin.name, uin.mnemonic, uin.tip);
+        uin = UIName.BTN_BROWSE;
+        btnBrowse = new AppButton(uin.name, uin.mnemonic, uin.tip);
+        uin = UIName.BTN_CLEAR;
+        btnClear = new AppButton(uin.name, uin.mnemonic, uin.tip);
+        uin = UIName.BTN_USG;
+        btnUsage = new AppButton(uin.name, uin.mnemonic, uin.tip);
+        btnExit = new AppExitButton(true);
 
         drawUI();
         addActions();
 
         printUsage();
-        setSize(new Dimension(1200, 500));
+        //setSize(new Dimension(1200, 500));
         setExtendedState(MAXIMIZED_BOTH);
+        setVisible(true);
     }
 
     private boolean isValidAction(String config) {
@@ -166,7 +189,7 @@ public class ChangeFileNames extends AppFrame {
     }
 
     private void startAsyncProcessing() {
-        SwingWorker<Void, Void> mySwingWorker = new SwingWorker<>() {
+        SwingWorker<Void, Void> mySwingWorker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
                 try {
@@ -188,9 +211,14 @@ public class ChangeFileNames extends AppFrame {
         mySwingWorker.execute();
     }
 
+    /**
+     * Exit the Application
+     */
     private void exitApp() {
         configs.saveConfig(this);
-        logger.log("Goodbye");
+        setVisible(false);
+        dispose();
+        logger.dispose();
         System.exit(0);
     }
 
@@ -212,10 +240,10 @@ public class ChangeFileNames extends AppFrame {
         jpUp.add(jcb);
         jpDown.add(lblParam1);
         jpDown.add(txtParam1);
-        txtParam1.setText(configs.getConfig(DefaultConfigs.Config.PARAM1));
+        txtParam1.setText(configs.getConfig(Configs.Param1.name()));
         jpDown.add(lblParam2);
         jpDown.add(txtParam2);
-        txtParam2.setText(configs.getConfig(DefaultConfigs.Config.PARAM2));
+        txtParam2.setText(configs.getConfig(Configs.Param2.name()));
         jpDown.add(btnPreview);
         jpDown.add(btnChange);
         jpDown.add(btnExit);
@@ -363,7 +391,7 @@ public class ChangeFileNames extends AppFrame {
         java.util.List<Path> listPaths = new ArrayList<>();
         try {
             if (args.isProcessSubFolder()) {
-                SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
+                SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
 
                     /**
                      * At present fetching only those sub-folders that has at least one matching file
@@ -555,27 +583,23 @@ public class ChangeFileNames extends AppFrame {
         lblLoading.setVisible(!enable);
     }
 
-    private void updateTitle(String addlInfo) {
-        setTitle(Utils.hasValue(addlInfo) ? title + Utils.SP_DASH_SP + addlInfo : title);
-    }
-
-    public String getLocationVal() {
+    public String getFolder() {
         return txtFolder.getText();
     }
 
-    public String getTxtParam1() {
+    public String getParam1() {
         return txtParam1.getText();
     }
 
-    public String getTxtParam2() {
+    public String getParam2() {
         return txtParam2.getText();
     }
 
-    public String getTxtExt() {
+    public String getExtension() {
         return txtExt.getText();
     }
 
     public String getAction() {
-        return ((ChoiceInfo)(jcb.getSelectedItem())).name();
+        return ((ChoiceInfo) (jcb.getSelectedItem())).name();
     }
 }

@@ -1,11 +1,16 @@
 package com.sv.changefilenames;
 
+import com.sv.core.Utils;
+import com.sv.core.logger.MyLogger;
+
+import static com.sv.core.Constants.SP_DASH_SP;
+
 /**
  * Created by 44085037 on 16-Oct-17
  */
 public abstract class BaseProcessor {
 
-    private MyLogger logger;
+    private final MyLogger logger;
 
     public BaseProcessor(MyLogger logger) {
         this.logger = logger;
@@ -16,7 +21,7 @@ public abstract class BaseProcessor {
     }
 
     private void printParameters(Arguments args, boolean isInitMsg) {
-        logger.log(this.getClass().getName() + Utils.SP_DASH_SP
+        logger.log(this.getClass().getName() + SP_DASH_SP
             + (isInitMsg ? "Initialising" : "Finishing") + " process with parameters: fileName ["
             + ((args.getFile() != null) ? args.getFile().getName() : "") + "] and [" + args.toString() + "]");
     }
@@ -29,7 +34,7 @@ public abstract class BaseProcessor {
     }
 
     public void log(String msg) {
-        logger.log(this.getClass().getName() + Utils.SP_DASH_SP + msg);
+        logger.log(this.getClass().getName() + SP_DASH_SP + msg);
     }
 
     public void checkParamForEmpty (String param, String errMsg) {

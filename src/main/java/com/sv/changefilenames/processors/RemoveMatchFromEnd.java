@@ -1,11 +1,15 @@
-package com.sv.changefilenames;
+package com.sv.changefilenames.processors;
+
+import com.sv.changefilenames.Arguments;
+import com.sv.changefilenames.BaseProcessor;
+import com.sv.core.logger.MyLogger;
 
 /**
  * Created by 44085037 on 16-Oct-17
  */
-public class ReplaceMatchFromEnd extends BaseProcessor {
+public class RemoveMatchFromEnd extends BaseProcessor {
 
-    public ReplaceMatchFromEnd(MyLogger logger) {
+    public RemoveMatchFromEnd(MyLogger logger) {
         super(logger);
     }
 
@@ -18,17 +22,14 @@ public class ReplaceMatchFromEnd extends BaseProcessor {
     @Override
     protected String process(Arguments args) {
         checkParamForEmpty(args.getParam1(),
-                "Parameter explaining which string to replace is null.");
-        checkParamForEmpty(args.getParam2(),
-                "Parameter explaining what string to replace is null.");
+                "Parameter explaining how many characters to remove is null.");
 
         String str = args.getFileNameNoExtn();
         String strRev = new StringBuilder(str).reverse().toString();
         String param1Rev = new StringBuilder(args.getParam1()).reverse().toString();
-        String param2Rev = new StringBuilder(args.getParam2()).reverse().toString();
 
         if (strRev.startsWith(param1Rev)) {
-            strRev = param2Rev + strRev.substring(args.getParam1().length());
+            strRev = strRev.substring(param1Rev.length());
         }
 
         return new StringBuilder(strRev).reverse().toString();
