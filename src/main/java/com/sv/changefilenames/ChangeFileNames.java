@@ -361,9 +361,11 @@ public class ChangeFileNames extends AppFrame {
         resetProcessedFileCounters();
     }
 
+    //TODO: parameter to show only actual results
+
     private BaseProcessor getProcessor(Arguments args) {
         final String log = "getProcessor: ";
-        final String clazzName = this.getClass().getPackage().getName() + "." + args.getChoice().getValue();
+        final String clazzName = this.getClass().getPackage().getName() + ".processors." + args.getChoice().getValue();
         logger.log("Trying to initialize processor: " + clazzName);
         try {
             return (BaseProcessor) Class.forName(clazzName)

@@ -91,7 +91,7 @@ public class Arguments {
     }
 
     public String getFileNameNoExtn() {
-        return Utils.getFileName(file.getName());
+        return Utils.chopFileNameExtn(file.getName());
     }
 
     public String getFileName() {
