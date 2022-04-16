@@ -366,7 +366,7 @@ public class ChangeFileNames extends AppFrame {
     private BaseProcessor getProcessor(Arguments args) {
         final String log = "getProcessor: ";
         final String clazzName = this.getClass().getPackage().getName() + ".processors." + args.getChoice().getValue();
-        logger.log("Trying to initialize processor: " + clazzName);
+        logger.info("Trying to initialize processor: " + clazzName);
         try {
             return (BaseProcessor) Class.forName(clazzName)
                     .getConstructor(logger.getClass())
@@ -455,7 +455,7 @@ public class ChangeFileNames extends AppFrame {
         if (error) {
             logger.error(s);
         } else {
-            logger.log(s);
+            logger.info(s);
         }
     }
 

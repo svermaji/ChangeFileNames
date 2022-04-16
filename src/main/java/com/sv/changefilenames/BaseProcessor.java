@@ -21,7 +21,7 @@ public abstract class BaseProcessor {
     }
 
     private void printParameters(Arguments args, boolean isInitMsg) {
-        logger.log(this.getClass().getName() + SP_DASH_SP
+        logger.info(this.getClass().getName() + SP_DASH_SP
             + (isInitMsg ? "Initialising" : "Finishing") + " process with parameters: fileName ["
             + ((args.getFile() != null) ? args.getFile().getName() : "") + "] and [" + args.toString() + "]");
     }
@@ -34,7 +34,7 @@ public abstract class BaseProcessor {
     }
 
     public void log(String msg) {
-        logger.log(this.getClass().getName() + SP_DASH_SP + msg);
+        logger.info(this.getClass().getName() + SP_DASH_SP + msg);
     }
 
     public void checkParamForEmpty (String param, String errMsg) {
